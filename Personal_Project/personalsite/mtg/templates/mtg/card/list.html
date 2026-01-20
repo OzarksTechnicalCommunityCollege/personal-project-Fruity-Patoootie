@@ -1,0 +1,15 @@
+{% extends "mtg/base.html" %}
+{% block title %}Card Databse!{% endblock %}
+{% block content %}
+<h1>Some Cool Cards I Like!</h1>
+{% for card in cards %}
+<h2>
+    <!-- Basically: Looping thru the list established in the view and 
+    printing the url to view details on the cards this page extends base.html-->
+    <a href="{% url 'mtg:card_detail' card.id %}">
+        {{ card.name }}
+    </a>
+</h2>
+{{ post.body|truncatewords:30|linebreaks }}
+{% endfor %}
+{% endblock %}

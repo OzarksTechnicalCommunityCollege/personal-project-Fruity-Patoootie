@@ -1,0 +1,20 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- Blocks for future pages to fill in, this one for the title-->
+        <title>{% block title%}{% endblock %}</title>
+        <!-- css for whole app-->
+        <link href="{% static "css/mtg.css" %}" rel="stylesheet">
+    </head>
+    <body>
+        <!-- Blocks for future pages to fill in, this one has the main content-->
+        <div id="content">
+            {% block content%}
+            {% endblock %}
+        </div>
+        <div id=""sidebar">
+        <h2>My blog</h2>
+    </div>
+    </body>
+</html>

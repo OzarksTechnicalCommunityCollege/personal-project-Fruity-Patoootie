@@ -1,0 +1,18 @@
+<!--Extends the mtg/base.html to fill in established blocks-->
+{% extends "mtg/base.html" %}
+{% block title %}{{ card.title }}{% endblock %}
+{% block content %}
+<!-- Here's where all that databse data goes! Very neat-->
+<h1>{{ card.title }}</h1>
+<p>Card Name: {{ card.name }}</p>
+<p>Card Type: {{ card.type }}</p>
+<p>Card Set: {{ card.set }}</p>
+<p>Card Oracle Text: {{ card.oracle_text }}</p>
+<p>Card Power: {{ card.power }}</p>
+<p>Card Toughness: {{ card.toughness }}</p>
+<p>Card Rarity: {{ card.Rarity }}</p>
+<p>Card Set Abbreviation: {{ card.set_abbreviation }}</p>
+<p>Commander Legality: {{ card.commander_legality }}</p>
+
+{{ post.body|linebreaks }}
+{% endblock %}
