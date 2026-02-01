@@ -6,10 +6,11 @@
 <h2>
     <!-- Basically: Looping thru the list established in the view and 
     printing the url to view details on the cards this page extends base.html-->
-    <a href="{% url 'mtg:card_detail' card.id %}">
+    <a href="{{ card.get_absolute_url }}">
         {{ card.name }}
     </a>
 </h2>
-{{ post.body|truncatewords:30|linebreaks }}
+{{ card.body|truncatewords:30|linebreaks }}
 {% endfor %}
+{% include "pagination.html" with page=page_obj %}
 {% endblock %}

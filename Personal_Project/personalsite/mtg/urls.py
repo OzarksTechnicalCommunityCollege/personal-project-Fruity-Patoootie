@@ -6,8 +6,12 @@ app_name = 'mtg'
 
 # setting URL patterns equal to appropriate paths.
 urlpatterns = [
-    #Example would be website.com/card_list
+    #Example would be website.com/card_list, Pattern for card list
     path('', views.card_list, name='card_list'),
-    #Example would be website.com/1/card_detail
-    path('<int:id>/', views.card_detail, name='card_detail'),
+    #Example would be website.com/1/lanowar-elves/card_detail, pattern for card details
+    path('<int:id>/<slug:card>', views.card_detail, name='card_detail'),
+    #Pattern for form access
+    path('<int:card_id>/share/', views.card_share, name='card_share'),
+    # Pattern for card comment access
+    path('<int:card_id>/comment', views.card_comment, name='card_comment'),
 ]

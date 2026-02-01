@@ -1,4 +1,9 @@
 from django.db import models
+from django.urls import reverse
+
+# To allow my computer to use the virtual environment run powershell command below
+# Set-ExecutionPolicy Unrestricted -Scope Process
+# then activate the environment with .\[VIRTUAL ENV NAME]\Scripts\activate
 
 # Creating a custom manager to sort cards by commander legality
 class LegalityManager(models.Manager):
@@ -16,6 +21,7 @@ class Card(models.Model):
         NONLEGAL = 'NL', 'Nonlegal'
     #Defining properties of the card class that pertains to database fields
     name = models.CharField(max_length=250)
+    slug = models.SlugField(max_length=250)
     type = models.CharField(max_length=250)
     set = models.CharField(max_length=100)
     oracle_text = models.TextField()
@@ -49,3 +55,39 @@ class Card(models.Model):
     def __str__(self):
         return self.name
     
+    #using the URL reverse function to build URLs dynamically
+    def get_absolute_url(self):
+        return reverse(
+            'mtg:card_detail',
+            args=[self.id, self.slug]
+        )
+
+# Comment class so people can discuss their favorite cards!
+class Comment(models.Model):
+    #Foreign key so that comments stick to their associated cards
+    card = models.ForeignKey(
+        Card,
+        on_delete=models.CASCADE,
+        related_name='comments'
+    )
+    #username
+    name = models.CharField(max_length=80)
+    #user's email
+    email=models.EmailField()
+    #user's comment
+    body = models.TextField()
+    #date created, updated, and if it's an active comment
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+    active = models.BooleanField(default=True)
+
+    #Ordering the comments based on when they were created, indexing on the same stipulation
+    class Meta:
+        ordering = ['created']
+        indexes = [
+            models.Index(fields=['created'])
+        ]
+
+    # string override so we can know what object we are accessing if needed during debugging
+    def __str__(self):
+        return f'Comment by {self.name} on {self.post}'
