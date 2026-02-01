@@ -1,5 +1,6 @@
 from django.db import models
 from django.urls import reverse
+from taggit.managers import TaggableManager
 
 # To allow my computer to use the virtual environment run powershell command below
 # Set-ExecutionPolicy Unrestricted -Scope Process
@@ -30,6 +31,7 @@ class Card(models.Model):
     toughness = models.SmallIntegerField()
     rarity = models.CharField(max_length=1)
     set_abbreviation = models.CharField(max_length=3)
+    tags= TaggableManager()
     # Setting the default of cards to be legal in commander
     commander_legality = models.CharField(
         max_length=2,
@@ -90,4 +92,4 @@ class Comment(models.Model):
 
     # string override so we can know what object we are accessing if needed during debugging
     def __str__(self):
-        return f'Comment by {self.name} on {self.post}'
+        return f'Comment by {self.name} on {self.card}'

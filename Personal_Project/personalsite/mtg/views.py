@@ -7,6 +7,7 @@ from django.views.decorators.http import require_POST
 from django.shortcuts import get_object_or_404
 from .forms import EmailCardForm, CommentForm
 from django.core.mail import send_mail
+from taggit.models import Tag
 
 
 # Create your views here.
@@ -14,6 +15,10 @@ from django.core.mail import send_mail
 def card_list(request):
     # a list of all cards in the databse
     card_list = Card.objects.all()
+    tag = None
+    if tag_slug:
+        tag = get_object_or_404(Tag, slug=tag_slug)
+        card_list = card_list.filter(tags__in=[tag])
 
     #Paginator with 3 posts per page
     paginator = Paginator(card_list, 3)
@@ -36,7 +41,11 @@ def card_list(request):
     # return the request, the url, and the list of cards
     return render(
         request,
-        'mtg/card/list.html',{'cards': cards}
+        'mtg/card/list.html',{'cards': cards},
+        {
+            'cards' : cards,
+            'tag': tag
+        }
     )
 
 # A method that returns a specific card from the database

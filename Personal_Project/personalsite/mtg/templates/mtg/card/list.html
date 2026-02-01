@@ -10,6 +10,7 @@
         {{ card.name }}
     </a>
 </h2>
+<p class="tags">Tags: {{ card.tags.all|join:", "}}</p>
 {{ card.body|truncatewords:30|linebreaks }}
 {% endfor %}
 {% include "pagination.html" with page=page_obj %}
