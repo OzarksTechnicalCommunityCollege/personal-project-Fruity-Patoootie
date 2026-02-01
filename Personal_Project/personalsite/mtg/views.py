@@ -8,11 +8,12 @@ from django.shortcuts import get_object_or_404
 from .forms import EmailCardForm, CommentForm
 from django.core.mail import send_mail
 from taggit.models import Tag
+from django.db.models import Count
 
 
 # Create your views here.
 # creating a list of card objects
-def card_list(request):
+def card_list(request, tag_slug=None):
     # a list of all cards in the databse
     card_list = Card.objects.all()
     tag = None
@@ -59,7 +60,9 @@ def card_detail(request, id, card):
 
     # Form for users to comment
     form = CommentForm()
-    
+    card_tags_ids = card.tags.values_list('id', flat=True)
+    similar_cards = Card.objects.filter(tags__in=card_tags_ids).exclude(id=card.id)
+    similar_cards = similar_cards.annotate(same_tags=Count('tags')).order_by('-same_tags')[:4]
     
     return render(
         request,
@@ -67,7 +70,8 @@ def card_detail(request, id, card):
         {
             'card': card,
             'comments': comments,
-            'form': form
+            'form': form,
+            'similar_cards' : similar_cards
         }
     )
 

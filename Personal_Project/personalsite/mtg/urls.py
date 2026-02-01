@@ -8,10 +8,15 @@ app_name = 'mtg'
 urlpatterns = [
     #Example would be website.com/card_list, Pattern for card list
     path('', views.card_list, name='card_list'),
+    # Patter for card view based on tags
+    path(
+        'tag/<slug:tag_slug>/', views.card_list, name='card_list_by_tag'
+    ),
     #Example would be website.com/1/lanowar-elves/card_detail, pattern for card details
     path('<int:id>/<slug:card>', views.card_detail, name='card_detail'),
     #Pattern for form access
     path('<int:card_id>/share/', views.card_share, name='card_share'),
     # Pattern for card comment access
     path('<int:card_id>/comment', views.card_comment, name='card_comment'),
+
 ]

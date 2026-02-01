@@ -2,6 +2,10 @@
 {% block title %}Card Databse!{% endblock %}
 {% block content %}
 <h1>Some Cool Cards I Like!</h1>
+<!-- If there's a tag selected, show the cards with that tag-->
+{% if tag %}
+    <h2>Cards tagged with "{{ tag.name }}"</h2>
+{% endif %}
 {% for card in cards %}
 <h2>
     <!-- Basically: Looping thru the list established in the view and 
@@ -10,8 +14,15 @@
         {{ card.name }}
     </a>
 </h2>
-<p class="tags">Tags: {{ card.tags.all|join:", "}}</p>
+<p class="tags">
+    Tags: 
+    {% for tag in cards.tags.all %}
+        <a href="{% url "mtg:card_list_by_tag" tag.slug %}">
+        {{ tag.name }}
+        </a>{% if not forloop.last %}, {% endif %}
+    {% endfor %}
+</p>
 {{ card.body|truncatewords:30|linebreaks }}
 {% endfor %}
-{% include "pagination.html" with page=page_obj %}
+{% include "pagination.html" with page=cards %}
 {% endblock %}
