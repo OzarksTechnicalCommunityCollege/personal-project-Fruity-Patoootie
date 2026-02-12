@@ -1,10 +1,11 @@
 {% extends "mtg/base.html" %}
+{% load mtg_tags%}
 {% block title %}Card Databse!{% endblock %}
 {% block content %}
 <h1>Some Cool Cards I Like!</h1>
 <!-- If there's a tag selected, show the cards with that tag-->
 {% if tag %}
-    <h2>Cards tagged with "{{ tag.name }}"</h2>
+<h2>Cards tagged with "{{ tag.name }}"</h2>
 {% endif %}
 {% for card in cards %}
 <h2>
@@ -15,14 +16,14 @@
     </a>
 </h2>
 <p class="tags">
-    Tags: 
+    Tags:
     {% for tag in cards.tags.all %}
-        <a href="{% url "mtg:card_list_by_tag" tag.slug %}">
+    <a href="{% url " mtg:card_list_by_tag" tag.slug %}">
         {{ tag.name }}
-        </a>{% if not forloop.last %}, {% endif %}
+    </a>{% if not forloop.last %}, {% endif %}
     {% endfor %}
 </p>
-{{ card.body|truncatewords:30|linebreaks }}
+{{ card.oracle_text|markdown|truncatewords:30 }}
 {% endfor %}
 {% include "pagination.html" with page=cards %}
 {% endblock %}

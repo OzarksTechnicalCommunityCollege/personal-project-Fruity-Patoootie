@@ -15,10 +15,20 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from django.contrib.sitemaps.views import sitemap
 from django.urls import include, path
-
+from mtg.sitemaps import CardSitemap
+sitemaps = {
+    'cards' : CardSitemap
+}
 urlpatterns = [
     path('admin/', admin.site.urls),
     # adding a path for the mtg app so it can be accessed. includes mtg.urls and the namespace so it is visible to the method
-    path('mtg/', include('mtg.urls', namespace='mtg'))
+    path('mtg/', include('mtg.urls', namespace='mtg')),
+    path(
+        'sitemap.xml',
+        sitemap,
+        {'sitemaps' : sitemaps},
+        name='django.contrib.sitemaps.views.sitemap'
+    )
 ]

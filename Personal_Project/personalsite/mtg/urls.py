@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from .feeds import LatestCardsFeed
 
 #using the app named mtg
 app_name = 'mtg'
@@ -17,6 +18,7 @@ urlpatterns = [
     #Pattern for form access
     path('<int:card_id>/share/', views.card_share, name='card_share'),
     # Pattern for card comment access
-    path('<int:card_id>/comment', views.card_comment, name='card_comment'),
-
+    path('<int:card_id>/comment/', views.card_comment, name='card_comment'),
+    path('feed/', LatestCardsFeed(), name='card_feed'),
+    path('search/', views.card_search, name='card_search'),
 ]

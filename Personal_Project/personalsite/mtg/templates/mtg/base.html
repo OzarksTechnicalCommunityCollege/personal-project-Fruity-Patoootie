@@ -1,20 +1,35 @@
+{% load mtg_tags %}
 {% load static %}
 <!DOCTYPE html>
 <html>
-    <head>
-        <!-- Blocks for future pages to fill in, this one for the title-->
-        <title>{% block title%}{% endblock %}</title>
-        <!-- css for whole app-->
-        <link href="{% static "css/mtg.css" %}" rel="stylesheet">
-    </head>
-    <body>
-        <!-- Blocks for future pages to fill in, this one has the main content-->
-        <div id="content">
-            {% block content%}
-            {% endblock %}
-        </div>
-        <div id=""sidebar">
-        <h2>Cool Cards!</h2>
+
+<head>
+    <!-- Blocks for future pages to fill in, this one for the title-->
+    <title>{% block title%}{% endblock %}</title>
+    <!-- css for whole app-->
+    <link href="{% static "css/mtg.css" %}" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Blocks for future pages to fill in, this one has the main content-->
+    <div id="content">
+        {% block content%}
+        {% endblock %}
     </div>
-    </body>
+    <div id="sidebar">
+        <h2>Cool Cards!</h2>
+        <p>
+            I've added {% total_cards %} cards so far.
+    </div>
+        <h3>Most commented cards</h3>
+    {% get_most_commented_cards as most_commented_cards %}
+    <ul>
+      {% for card in most_commented_cards %}
+        <li>
+          <a href="{{ card.get_absolute_url }}">{{ card.name }}</a>
+        </li>
+      {% endfor %}
+    </ul>
+</body>
+
 </html>

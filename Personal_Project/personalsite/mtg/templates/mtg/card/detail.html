@@ -1,5 +1,6 @@
 <!--Extends the mtg/base.html to fill in established blocks-->
 {% extends "mtg/base.html" %}
+{% load mtg_tags %}
 {% block title %}{{ card.title }}{% endblock %}
 {% block content %}
 <!-- Here's where all that database data goes! Very neat-->
@@ -7,7 +8,7 @@
 <p>Card Name: {{ card.name }}</p>
 <p>Card Type: {{ card.type }}</p>
 <p>Card Set: {{ card.set }}</p>
-<p>Card Oracle Text: {{ card.oracle_text }}</p>
+<p>Card Oracle Text: {{ card.oracle_text|markdown }}</p>
 <p>Card Power: {{ card.power }}</p>
 <p>Card Toughness: {{ card.toughness }}</p>
 <p>Card Rarity: {{ card.Rarity }}</p>
@@ -22,7 +23,7 @@
 {% for card in similar_cards %}
 <!-- Utilizing the view logic of similar cards to show cards that share the same tags as the current card-->
     <p>
-    <a href="{{ card.get_absolute_url }}">{{ card.title }}</a>
+    <a href="{{ card.get_absolute_url }}">{{ card.name }}</a>
     </p>
 {% empty %}
     There are no similar cards yet.

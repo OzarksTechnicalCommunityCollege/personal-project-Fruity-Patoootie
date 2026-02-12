@@ -42,7 +42,7 @@ def card_list(request, tag_slug=None):
     # return the request, the url, and the list of cards
     return render(
         request,
-        'mtg/card/list.html',{'cards': cards},
+        'mtg/card/list.html',
         {
             'cards' : cards,
             'tag': tag
@@ -106,6 +106,29 @@ def card_share(request, card_id):
             'card': card,
             'form': form,
             'sent': sent
+        }
+    )
+
+def card_search(request):
+    form = SearchForm()
+    query = None
+    results = []
+    if 'query' in request.GET:
+        form = SearchForm(request.GET)
+        if form.is_valid():
+            query = form.cleaned_data['query']
+            results = (
+                    Card.objects.annotate(similarity=TrigramSimilarity('name', query),)
+                .filter(similarity_gt=0.1)
+                .order_by('-similarity')
+            )
+    return render(
+        request,
+        'mtg/card/search.html',
+        {
+            'form': form,
+            'query': query,
+            'results': results
         }
     )
 
