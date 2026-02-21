@@ -1,10 +1,27 @@
 from django.db import models
 from django.urls import reverse
 from taggit.managers import TaggableManager
+from django.conf import settings
 
 # To allow my computer to use the virtual environment run powershell command below
 # Set-ExecutionPolicy Unrestricted -Scope Process
 # then activate the environment with .\[VIRTUAL ENV NAME]\Scripts\activate
+
+#User Model
+from django.conf import settings
+class Profile(models.Model):
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE
+    )
+    date_of_birth = models.DateField(blank=True, null=True)
+    photo = models.ImageField(
+        upload_to='users/%Y/%m/%d/',
+        blank=True
+    )
+    def __str__(self):
+        return f'Profile of {self.user.username}'
+
 
 # Creating a custom manager to sort cards by commander legality
 class LegalityManager(models.Manager):

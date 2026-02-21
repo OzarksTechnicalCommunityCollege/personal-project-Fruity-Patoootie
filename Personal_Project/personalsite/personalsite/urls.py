@@ -18,6 +18,8 @@ from django.contrib import admin
 from django.contrib.sitemaps.views import sitemap
 from django.urls import include, path
 from mtg.sitemaps import CardSitemap
+from django.conf import settings
+from django.conf.urls.static import static
 sitemaps = {
     'cards' : CardSitemap
 }
@@ -30,5 +32,11 @@ urlpatterns = [
         sitemap,
         {'sitemaps' : sitemaps},
         name='django.contrib.sitemaps.views.sitemap'
-    )
+    ),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(
+        settings.MEDIA_URL,
+        document_root=settings.MEDIA_ROOT
+    )
