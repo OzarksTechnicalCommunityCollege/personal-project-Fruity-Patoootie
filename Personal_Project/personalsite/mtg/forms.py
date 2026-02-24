@@ -1,6 +1,5 @@
 from django import forms
 from .models import Comment, Profile
-from django.contrib.auth import get_user_model
 
 # Form that can take a name, email, email to send to, and text
 class EmailCardForm(forms.Form):
