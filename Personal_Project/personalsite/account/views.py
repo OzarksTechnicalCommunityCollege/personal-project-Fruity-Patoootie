@@ -2,7 +2,13 @@ from django.shortcuts import render
 from django.contrib.auth import authenticate, login
 from django.http import HttpResponse
 from django.shortcuts import render
-from .forms import LoginForm, UserRegistrationForm
+from .forms import (
+    LoginForm, 
+    UserRegistrationForm,
+    UserEditForm,
+    ProfileEditForm
+    )
+from .models import Profile
 # Create your views here.
 @login_required
 def edit(request):

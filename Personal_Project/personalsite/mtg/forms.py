@@ -1,5 +1,5 @@
 from django import forms
-from .models import Comment, Profile
+from .models import Comment
 
 # Form that can take a name, email, email to send to, and text
 class EmailCardForm(forms.Form):
