@@ -1,11 +1,11 @@
 from django.shortcuts import render
-from .models import Card, Profile
+from .models import Card
 from django.http import HttpResponse
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.views.generic import ListView
 from django.views.decorators.http import require_POST
 from django.shortcuts import get_object_or_404
-from .forms import EmailCardForm, CommentForm, LoginForm, UserRegistrationForm, UserEditForm, ProfileEditForm
+from .forms import EmailCardForm, CommentForm, SearchForm
 from django.core.mail import send_mail
 from taggit.models import Tag
 from django.db.models import Count
