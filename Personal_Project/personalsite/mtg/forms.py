@@ -1,5 +1,5 @@
 from django import forms
-from .models import Comment
+from .models import Comment, Deck
 
 # Form that can take a name, email, email to send to, and text
 class EmailCardForm(forms.Form):
@@ -18,3 +18,8 @@ class CommentForm(forms.ModelForm):
         
 class SearchForm(forms.Form):
     query = forms.CharField()
+
+class DeckCreateForm(forms.Form):
+    class Meta:
+        model = Deck
+        fields = ['name', 'description']
