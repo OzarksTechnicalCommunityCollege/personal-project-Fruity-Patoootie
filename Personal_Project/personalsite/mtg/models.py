@@ -2,10 +2,13 @@ from django.db import models
 from django.urls import reverse
 from taggit.managers import TaggableManager
 from django.conf import settings
+from django.utils.text import slugify
 
 # To allow my computer to use the virtual environment run powershell command below
 # Set-ExecutionPolicy Unrestricted -Scope Process
 # then activate the environment with .\[VIRTUAL ENV NAME]\Scripts\activate
+
+
 
 
 # Creating a custom manager to sort cards by commander legality
@@ -95,3 +98,31 @@ class Comment(models.Model):
     # string override so we can know what object we are accessing if needed during debugging
     def __str__(self):
         return f'Comment by {self.name} on {self.card}'
+
+
+
+#Deck class
+class Deck(models.Model):
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        related_name='decks_created',
+        on_delete=models.CASCADE
+    )
+    cards = models.ManyToManyField(Card)
+    users_like = models.ManyToManyField(
+        settings.AUTH_USER_MODEL,
+        related_name ='decks_liked',
+        blank=True
+    )
+    name = models.CharField(max_length=200)
+    slug = models.SlugField(max_length=200, blank=True)
+    description = models.TextField(blank=True)
+
+    def __str__(self):
+        return self.name
+    
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
+    
