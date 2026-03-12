@@ -108,7 +108,7 @@ class Deck(models.Model):
         related_name='decks_created',
         on_delete=models.CASCADE
     )
-    cards = models.ManyToManyField(Card)
+    cards = models.ManyToManyField(Card, related_name='added_cards', blank=True)
     users_like = models.ManyToManyField(
         settings.AUTH_USER_MODEL,
         related_name ='decks_liked',
@@ -125,4 +125,7 @@ class Deck(models.Model):
         if not self.slug:
             self.slug = slugify(self.name)
         super().save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        return reverse('images:detail', args=[self.id, self.slug])
     

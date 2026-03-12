@@ -22,5 +22,7 @@ urlpatterns = [
     path('<int:card_id>/comment/', views.card_comment, name='card_comment'),
     path('feed/', LatestCardsFeed(), name='card_feed'),
     path('search/', views.card_search, name='card_search'),
-    
+    path('create/', views.deck_create, name='create'),
+    path('detail/<int:id>/<slug:slug>/', views.deck_detail, name='deck_detail'),
+    path('like/', views.deck_like, name='like'),
 ]

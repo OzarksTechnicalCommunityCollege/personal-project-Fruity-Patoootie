@@ -1,11 +1,11 @@
 from django.shortcuts import render
-from .models import Card
+from .models import Card, Deck
 from django.http import HttpResponse
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.views.generic import ListView
 from django.views.decorators.http import require_POST
 from django.shortcuts import get_object_or_404
-from .forms import EmailCardForm, CommentForm, SearchForm
+from .forms import EmailCardForm, CommentForm, SearchForm, DeckCreateForm
 from django.core.mail import send_mail
 from taggit.models import Tag
 from django.db.models import Count
@@ -175,3 +175,56 @@ def card_comment(request, card_id):
             'comment': comment
         }
     )
+
+# Requiring a login so that we can have a user assocated with created deck.
+@login_required
+def deck_create(request):
+    form = DeckCreateForm(data=request.POST)
+    if form.is_valid():
+        cd = form.cleaned_data
+        new_deck = form.save(commit=False)
+        new_deck.user = request.user
+        new_deck.save()
+        return render(
+            request,
+            'account/',
+            {
+                'form' : form
+            }
+        )
+    else:
+        form = DeckCreateForm(data=request.GET)
+
+    return render(
+        request,
+        'account/',
+        {
+            'form' : form
+        }
+    )
+
+def deck_detail(request, id, slug):
+    deck = get_object_or_404(Deck, id=id, slug=slug)
+    return render(
+        request,
+        'decks/deck/detail.html',
+        {'section': 'decks', 'deck' : deck}
+    )
+
+from django.http import JsonResponse
+@login_required
+@require_POST
+def deck_like(request):
+    deck_id = request.POST.get('id')
+    action = request.POST.get('action')
+    if deck_id and action:
+        try:
+            image = Deck.objects.get(id=deck_id)
+            if action == 'like':
+                image.users_like.add(request.user)
+            else:
+                image.users_like.remove(request.user)
+            return JsonResponse({'status': 'ok'})
+        except Deck.DoesNotExist:
+            pass
+    return JsonResponse({'status' : 'error'})
