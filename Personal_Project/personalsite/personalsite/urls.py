@@ -34,6 +34,7 @@ urlpatterns = [
         name='django.contrib.sitemaps.views.sitemap'
     ),
     path('account/', include('account.urls')),
+    path('__debug__/', include('debug_toolbar.urls')),
     #path('account/', include('account.urls', namespace='account')),
 
 ]
