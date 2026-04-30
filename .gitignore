@@ -1,6 +1,6 @@
 #.env
 .env
-
+personal_Project/myshop/.env
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
